@@ -1,0 +1,225 @@
+\documentclass[12pt,a4paper,twoside]{article}
+%\documentclass[journal]{IEEEtran}
+
+\usepackage{paralist}
+\usepackage[stable]{footmisc}
+\hyphenation{op-tical net-works semi-conduc-tor}
+
+\usepackage[top=2.4cm, bottom=2.4cm, left=2.95cm, right=2.95cm]{geometry} 
+
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily, escapechar=\%}
+
+\usepackage{color}
+\usepackage{setspace}
+
+\usepackage{amsmath}
+
+\definecolor{Code}{rgb}{0,0,0}
+\definecolor{Decorators}{rgb}{0.5,0.5,0.5}
+\definecolor{Numbers}{rgb}{0.5,0,0}
+\definecolor{MatchingBrackets}{rgb}{0.25,0.5,0.5}
+\definecolor{Keywords}{rgb}{0,0,1}
+\definecolor{self}{rgb}{0,0,0}
+\definecolor{Strings}{rgb}{0,0.63,0}
+\definecolor{Comments}{rgb}{0,0.63,1}
+\definecolor{Backquotes}{rgb}{0,0,0}
+\definecolor{Classname}{rgb}{0,0,0}
+\definecolor{FunctionName}{rgb}{0,0,0}
+\definecolor{Operators}{rgb}{0,0,0}
+\definecolor{Background}{rgb}{0.98,0.98,0.98}
+
+\lstnewenvironment{python}[1][]{
+\lstset{
+numbers=left,
+numberstyle=\footnotesize,
+numbersep=1em,
+xleftmargin=1em,
+framextopmargin=2em,
+framexbottommargin=2em,
+showspaces=false,
+showtabs=false,
+showstringspaces=false,
+frame=l,
+tabsize=4,
+% Basic
+basicstyle=\ttfamily\small\setstretch{1},
+backgroundcolor=\color{Background},
+language=Python,
+% Comments
+commentstyle=\color{Comments}\slshape,
+% Strings
+stringstyle=\color{Strings},
+morecomment=[s][\color{Strings}]{"""}{"""},
+morecomment=[s][\color{Strings}]{'''}{'''},
+% keywords
+morekeywords={import,from,class,def,for,while,if,is,in,elif,else,not,and,or,print,break,continue,return,True,False,None,access,as,,del,except,exec,finally,global,import,lambda,pass,print,raise,try,assert},
+keywordstyle={\color{Keywords}\bfseries},
+% additional keywords
+morekeywords={[2]@invariant},
+keywordstyle={[2]\color{Decorators}\slshape},
+emph={self},
+emphstyle={\color{self}\slshape},
+%
+}}{}
+
+
+
+\begin{document}
+
+\title{Cryptography: Secrecy Through Numbers}
+\author{Edward~JF~Seabrook}
+
+\maketitle
+
+\section{Ellitic Curves}
+This question has been divided into four parts, labeled A through D.
+
+\subsection{Part a}
+The order of my group is twenty four. 
+
+\subsection{Part b}
+Yes, of course it is. 
+
+\subsection{Part c}
+Elliptic curves have the interesting property of that any two points on the
+lien will intersect the line again at another point. This can be used as a
+group operator, and used to generate a group. For some reason this new group
+can be nice and secure.  
+
+\subsection{Part d}
+Answer here. 
+
+
+\section{Vigenere Cipher}
+We were given the following message, and told to decrypt it:
+
+
+\begin{lstlisting}
+qhc jeqpaeb srxrrp hcoe pbccktjv hyoduxrc qrmgalp hyse
+yqtpxcrbd ree yqtcktgln mc gmsepkmcktq xnb oeqbapzhcos mke mc
+tfb myfn alnabrlp iq qhyq ilqeeoarbd afrarirp il jijftyoy mo
+cpftgzaj fndoaqqrsztsoe ympjfcyqimks aluja bc jajfcgluqiy
+kxngmujxtca dsoild tfb mykudxcrrrgkg nooabsq thgzh mctck tyheq
+mlyze yyrmxd flwcsep pilze reepb hyse zbel ko pbpmotca
+hyoduxrc qrmgalp il mryztgze wbt jftrie gp kllwl xbmrt flw
+qrcf x tpljyk wmrlb iomh lghe ykd flw fxrb qo gjpjbmckt mke gk
+ppxcrfcc lnc bxyjpjb iq aonxnr qrmgal qhgp cyk bc rsca tm
+zokmrmjiqb tfb sczupftw lf y jeykildfsi rcxl ulrja tyogcq
+wfflc xvmfdgkg bbtcztgln zv fskcrfolxl rbsrfne xs ublj xs
+roohxn bbtcztgln kbcfxngpmq puae tpljyks axn zb uqbd rl
+eqqaziiqe a ffdbbn qfdc zhyknci il xn mqhcowgpe qfdc zhyknci
+rcpiqqalq dcpiek tffs roohxn bleq kor zhykgc qhc ioefc txlsb
+od xnw darb bsq ilptcxd aealdeq lnjv tfb pmtep mrmcijb od qwm
+darbs yk etxlsxtmo wfl iq kor xwyoe mc tfb tpljyk cyknmq
+arqaah tfb tpljyk dcpiek uqfne zokjol pibb cfxnlbl yqtyzkq qhc
+lwlbr mc tfb tpljyk hmtetbr axn spe ffs ikouiebde mc tfb
+tpljyk pmtep jobbl rl eqqaziiqe a ffdbbn qfdc zhyknci tfxt
+pblgxbjv lcxkq lur peaoer hewp tffs gp tfb ela od qhc jeqpaeb 
+\end{lstlisting}
+
+
+\section{Two Part Encryption}
+The file ``secret.hex'' contained a secret message. The message had been
+encyrpted in two stages, the first stage was unknown, and the second stage was
+a simple XOR based cipher. We were given the first two characters of the
+intermediate text --`Hg'.
+
+To decrypt the message, the two stages had to be performed in reverse order:
+first the XOR stage, followed by the unknown cipher stage. 
+
+I began by creating a python script that first reads in the secret message, and
+then retrieves the key for the known portion of the message. Given that we only
+had two letters of the intermediate text, I guessed that the key length of the
+message is two, and repreated the key that I had retrieved for the length of
+the message to retrieve some text. The Python code that I used to decode the
+message into it's intermediate form is as follows:
+
+\begin{python}
+with open("secret.hex") as f:
+    ciphertext = f.read()
+
+    k1 = chr(ord(ciphertext[0:1]) ^ ord("H"))
+    k2 = chr(ord(ciphertext[1:2]) ^ ord("g"))
+    keystream = (k1 + k2) * (len(ciphertext) / 2)
+
+    plaintext = "".join(
+            [chr(ord(k) ^ ord(c)) 
+             for k, c in zip(keystream, ciphertext)]
+    )
+
+    print plaintext
+\end{python}
+
+This resulted in the followin intermediate text; 
+
+\begin{lstlisting}
+Hgt ltsbuba pm dumt uy hgt lpyh wqpmpxbr sbr tdxyuct lvyhtqv
+pm hgtl sdd, xbobpib hp tctb hgt aqtshtyh lubry.  Yxqtdv
+sbvpbt igp htddy vpx hgtv gsct hgt sbyitq uy npouba, lsr pq
+yulwdv luyhsotb.  Hgtqt sqt lsbv hgubay hgsh lsot dumt ipqhg
+gpdruba pb hp sbr yscpxquba. Exh dumt uy xbwqtrukhsedt sbr it
+sqt pmhtb lvyhtquty tctb hp pxqytdcty.  It hgubo yxkktyy,
+gswwubtyy, gtdwuba phgtqy, pq yxqwsyyuba pxqytdcty iudd lsot
+dumt ipqhg ducuba, exh it ksb sdisvy et iqpba pq mqxyhqshtr ev
+tctbhy. Hguy uy s qsbrpl wgqsyt.  Wgudpypwgtqy gsct s dph hp
+ysv sepxh hgt csdxt pm sdd hgtyt hgubay, sbr s duhhdt dtyy hp
+ysv sepxh pbt pm hgt lpyh csdxsedt hgubay pm sdd: dpct. Yp it
+ksb et kdtsq tbpxag sepxh igsh uh ltsby mpq dumt hp gsct
+ltsbuba sbr csdxt, exh igtb it wxh rpib pxq wgudpypwgv eppoy
+sbr skhxsddv ath pb iuhg ducuba, ltsbuba sbr csdxt ksb et
+tdxyuct. Ducuba itdd uy lpqt sqh hgsb ykutbkt pq wgudpypwgv.
+Hgtqtmpqt,  hgt pbdv ytbyt it ksb lsot pm hgt urts hgsh dumt
+gsy ltsbuba uy hgsh hgtqt sqt yplt qtsypby hp duct qshgtq hgsb
+hp rut, sbr hgpyt qtsypby sqt hp et mpxbr ub hgt ducuba pm
+dumt uhytdm.
+\end{lstlisting}
+
+By simple inspection, this looked like it was likely to be the output of a
+basic cipher -- the message contains only alphabetic characters, and there are
+spaces evenly distributed throughout the text. Although this could have just
+been by chance, it definitely looked like a good lead to follow.
+
+As I believed this text looked like human language, I decided the next step was to calculate the Index of Coincidence (IC) for this text. The IC is a weighted sum of the frequency of the letters, and can be used to identify if a ciphertext has the same frequency distribution as a given language. If it has the same distribution, then the cipher is a simple substitution cipher. The IC is calculated as:
+
+$$
+\textup{IC} =  \frac{\sum_{i=1}^{c} n_i(n_i -1)}{N(N - 1)/c}
+$$
+
+Where $N$ is the length of the text. $n_1$ to $n_c$ are the counts
+for each of the possible characters. And $c$ is the number of
+letters in the alphabet. 
+ 
+\section{Headline Puzzles}
+This question has been divided into five parts, labeled 1 to 5.
+
+I found this question more challenging than first expected because:
+\begin{itemize}
+\item Ciphertext not long enough to perform frequency analysis
+\item Keyspace is too large to brute force
+\item We cannot be certain of the encryption mechanism
+\item Some of the texts do not contain any double characters (e.g. "oo")
+\end{itemize}
+
+% references section
+
+% can use a bibliography generated by BibTeX as a .bbl file
+% BibTeX documentation can be easily obtained at:
+% http://www.ctan.org/tex-archive/biblio/bibtex/contrib/doc/
+% The IEEEtran BibTeX style support page is at:
+% http://www.michaelshell.org/tex/ieeetran/bibtex/
+%\bibliographystyle{IEEEtran}
+% argument is your BibTeX string definitions and bibliography database(s)
+%\bibliography{IEEEabrv,../bib/paper}
+%
+% <OR> manually copy in the resultant .bbl file
+% set second argument of \begin to the number of references
+% (used to reserve space for the reference number labels box)
+%\begin{thebibliography}{1}
+%\end{thebibliography}
+
+
+%\vfill
+
+% that's all folks
+\end{document}
