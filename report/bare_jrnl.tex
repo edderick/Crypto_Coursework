@@ -189,7 +189,39 @@ $$
 Where $N$ is the length of the text. $n_1$ to $n_c$ are the counts
 for each of the possible characters. And $c$ is the number of
 letters in the alphabet. 
- 
+
+To calculate the IC, I used the following python script. 
+\begin{python}
+from __future__ import division
+import string
+
+with open("intermediate.txt") as f: 
+    s = f.read()
+
+    freq = {}
+
+    for c in string.ascii_uppercase:
+        freq[c.upper()] = 0
+
+    for c in s:
+        if c.upper() in string.ascii_uppercase:
+            freq[c.upper()] += 1
+                           
+    N = sum([n for n in freq.values()])
+    c = len(string.ascii_uppercase)
+
+    numerator = sum([(n * (n-1)) for n in freq.values()]) 
+    denominator = ((N * (N-1))/c)
+
+    IC = numerator / denominator 
+
+    print IC
+\end{python}
+
+The value calculated for the IC was ``1.7086'', which is very close to that of
+the English language (1.73). This finding confirmed my belief that the cipher
+used was some form of monoalphabetic substitution.  
+
 \section{Headline Puzzles}
 This question has been divided into five parts, labeled 1 to 5.
 
