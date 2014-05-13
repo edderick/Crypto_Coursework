@@ -151,7 +151,7 @@ with open("secret.hex") as f:
     print plaintext
 \end{python}
 
-This resulted in the followin intermediate text; 
+This resulted in the followin intermediate text: 
 
 \begin{lstlisting}
 Hgt ltsbuba pm dumt uy hgt lpyh wqpmpxbr sbr tdxyuct lvyhtqv
@@ -221,6 +221,37 @@ with open("intermediate.txt") as f:
 The value calculated for the IC was ``1.7086'', which is very close to that of
 the English language (1.73). This finding confirmed my belief that the cipher
 used was some form of monoalphabetic substitution.  
+
+By copying the intermediate text into {\tt vim}, and using the search and
+replace functionality (s/x/Y/g), I began substituting letters with likely
+substitutions. 
+
+Eventually, I managed to obtain the following message. As the message, makes
+sense to me in English, I am confident that this passage is the correct
+plaintext. 
+
+\begin{lstlisting}
+THE MEANING OF LIFE IS THE MOST PROFOUND AND ELUSIVE MYSTERY
+OF THEM ALL, UNKNOWN TO EVEN THE GREATEST MINDS. SURELY
+ANYONE WHO TELLS YOU THEY HAVE THE ANSWER IS JOKING, MAD OR
+SIMPLY MISTAKEN.  THERE ARE MANY THINGS THAT MAKE LIFE WORTH
+HOLDING ON TO AND SAVOURING. BUT LIFE IS UNPREDICTABLE AND
+WE ARE OFTEN MYSTERIES EVEN TO OURSELVES. WE THINK SUCCESS,
+HAPPINESS, HELPING OTHERS, OR SURPASSING OURSELVES WILL MAKE
+LIFE WORTH LIVING, BUT WE CAN ALWAYS BE WRONG OR FRUSTRATED
+BY EVENTS.  THIS IS A RANDOM PHRASE.  PHILOSOPHERS HAVE A
+LOT TO SAY ABOUT THE VALUE OF ALL THESE THINGS, AND A LITTLE
+LESS TO SAY ABOUT ONE OF THE MOST VALUABLE THINGS OF ALL:
+LOVE. SO WE CAN BE CLEAR ENOUGH ABOUT WHAT IT MEANS FOR LIFE
+TO HAVE MEANING AND VALUE, BUT WHEN WE PUT DOWN OUR
+PHILOSOPHY BOOKS AND ACTUALLY GET ON WITH LIVING, MEANING
+AND VALUE CAN BE ELUSIVE. LIVING WELL IS MORE ART THAN
+SCIENCE OR PHILOSOPHY. THEREFORE,  THE ONLY SENSE WE CAN
+MAKE OF THE IDEA THAT LIFE HAS MEANING IS THAT THERE ARE
+SOME REASONS TO LIVE RATHER THAN TO DIE, AND THOSE REASONS
+ARE TO BE FOUND IN THE LIVING OF LIFE ITSELF.
+\end{lstlisting}
+
 
 \section{Headline Puzzles}
 This question has been divided into five parts, labeled 1 to 5.
