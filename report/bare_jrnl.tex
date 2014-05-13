@@ -8,7 +8,7 @@
 \usepackage[top=2.4cm, bottom=2.4cm, left=2.95cm, right=2.95cm]{geometry} 
 
 \usepackage{listings}
-\lstset{basicstyle=\ttfamily, escapechar=\%}
+\lstset{basicstyle=\ttfamily, escapechar=\€}
 
 \usepackage{color}
 \usepackage{setspace}
@@ -118,7 +118,82 @@ tpljyk pmtep jobbl rl eqqaziiqe a ffdbbn qfdc zhyknci tfxt
 pblgxbjv lcxkq lur peaoer hewp tffs gp tfb ela od qhc jeqpaeb 
 \end{lstlisting}
 
+My initial guess was that this cipher was a monoalphabetic substitution cipher,
+since the ciphertext appears to have spaces in roughly the correct places. 
 
+I began solving this cipher by calculating the Index of Coincidence (IC) for
+the text. I was dissapointed to obtain a value of 1.128, which is quite
+different from the IC for English of 1.73. This means that the cipher used is
+not a simple monoalphabetic substitution. 
+
+I then attempted to iterate through different strides (number of letters to
+skip when sampling), to see if the cipher used was dependent on the position in
+the text. A stride of 2 did not produce a better result, yielding 1.126 and
+1.129 starting from character 0 and 1 respectively.  
+
+Fortunately, using a stride of 3 returned a much better set of values: 1.844,
+1.759 and 1.80; for starting character positions of 0, 1 and 2 respectively.
+Although this is not exactly equal the expected values for English, I felt that
+for the size of the messages (total length of the message divided by three),
+they indicated that it was worth investigating.  
+
+Given that the substitution was a poly-alphabetic substitution with stride of
+three, I began by treating the cipher as a Viginere cipher. On inspection, the
+triad 'qhc' jumped out at me as a repeating pattern. Due to the commonness of
+the word, I figured that the word could be `the'. If this was correct, then the
+Viginere key would be 'xay', resulting in a shifts of 23, 0 and 2.
+
+Using the following python code, I generated the answer to the question:
+
+\begin{python}
+import string
+
+def shift(c, key):
+    n = ord(c) - ord('a')
+    k = ord(key) - ord('a')
+    return chr((n - k) % 26 + ord('a'))
+
+key = "xay"
+answer = ""
+
+with open('ciphertext.txt'):
+    n = 0
+    for c in s:
+        if c in string.ascii_lowercase:
+            answer += shift(c, key[n%len(key)])
+            n += 1
+        else:
+            answer += c
+        
+print answer
+\end{python}
+
+The answer that I obtained was: 
+
+\begin{lstlisting}
+the message starts here recently hardware trojans have
+attracted the attention of governments and researchers one
+of the main concerns is that integrated circuits in military
+or critical infrastructure applications could be maliciously
+manipulated during the manufacturing process which often
+takes place abroad however since there have been no reported
+hardware trojans in practice yet little is known about how
+such a trojan would look like and how hard to implement one
+in practice one example is dopant trojan this can be used to
+compromise the security of a meaningful real world target
+while avoiding detection by functional testing as well as
+trojan detection mechanisms such trojans can be used to
+establish a hidden side channel in an otherwise side channel
+resistant design this trojan does not change the logic value
+of any gate but instead changes only the power profile of
+two gates an evaluator who is not aware of the trojan cannot
+attack the trojan design using common side channel attacks
+the owner of the trojan however can use his knowledge of the
+trojan power model to establish a hidden side channel that
+reliably leaks out secret keys this is the end of the
+message
+\end{lstlisting}
+ 
 \section{Two Part Encryption}
 The file ``secret.hex'' contained a secret message. The message had been
 encyrpted in two stages, the first stage was unknown, and the second stage was
@@ -180,7 +255,12 @@ basic cipher -- the message contains only alphabetic characters, and there are
 spaces evenly distributed throughout the text. Although this could have just
 been by chance, it definitely looked like a good lead to follow.
 
-As I believed this text looked like human language, I decided the next step was to calculate the Index of Coincidence (IC) for this text. The IC is a weighted sum of the frequency of the letters, and can be used to identify if a ciphertext has the same frequency distribution as a given language. If it has the same distribution, then the cipher is a simple substitution cipher. The IC is calculated as:
+As I believed this text looked like natrual language, I decided the next step was
+to calculate the Index of Coincidence (IC) for this text. The IC is a weighted
+sum of the frequency of the letters, and can be used to identify if a
+ciphertext has the same frequency distribution as a given language. If it has
+the same distribution, then the cipher is a simple substitution cipher. The IC
+is calculated as:
 
 $$
 \textup{IC} =  \frac{\sum_{i=1}^{c} n_i(n_i -1)}{N(N - 1)/c}
@@ -224,7 +304,11 @@ used was some form of monoalphabetic substitution.
 
 By copying the intermediate text into {\tt vim}, and using the search and
 replace functionality (s/x/Y/g), I began substituting letters with likely
-substitutions. 
+substitutions. I started basing my substitions on the frequencies of the
+letters; i.e. beginning by replacing `t' ,the most common letter in the text,
+with `E', the most common letter in English. Once I had replaced a few letters,
+it became obvious what words in the text could potentially be, so I based my
+substitutions on this. 
 
 Eventually, I managed to obtain the following message. As the message, makes
 sense to me in English, I am confident that this passage is the correct
