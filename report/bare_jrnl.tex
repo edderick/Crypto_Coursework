@@ -1,7 +1,6 @@
 \documentclass[12pt,a4paper,twoside]{article}
 %\documentclass[journal]{IEEEtran}
 
-\usepackage{paralist}
 \usepackage[stable]{footmisc}
 \hyphenation{op-tical net-works semi-conduc-tor}
 
@@ -64,6 +63,7 @@ emphstyle={\color{self}\slshape},
 }}{}
 
 
+\usepackage{paralist}
 
 \begin{document}
 
@@ -350,12 +350,14 @@ http://www.karamasoft.com/ultimatespell/dictionary.aspx. This dictionary file
 contained 126,850 words. 
 
 \begin{python}
-import string 
+import string
 
-IN_WORD = "ERYHURBRWCVRPW"
 
-with open("en-GB.dic") as word_list:
-    dictionary = word_list.read().split("\r\n")
+raw_sentence =   """YNTS QHABT YBK KJVT NR ORLSJN 
+                 HCTCYA HQYKJV CYOCMBYNT"""
+known_sentence = """YNTS QHABT YBK KJVT NR ORLSJN 
+                 HCTCYA HQYKJV incident"""
+
 
 def pattern(s):
     seen = {}
@@ -368,21 +370,138 @@ def pattern(s):
             out += x
             seen[c] = x
             x = chr(ord(x)+1)
-
     return out
 
-pattern_dict = [pattern(w) for w in dictionary]
+def words_match(a, b):
+    for c, d in zip(a, b):
+        if c in string.ascii_lowercase:
+            if c != d:
+                return False
+    return True
 
-for i, p in enumerate(pattern_dict):
-    if p == pattern(IN_WORD.lower()):
-        print dictionary[i]
+def find_word(word, pattern_dic):
+    word_list = []
+    for i, (w, p) in enumerate(pattern_dict):
+        if p == pattern(word) and words_match(word, w):
+            word_list.append(w)
+    return word_list
 
+def expand_known_characters(raw, known):
+    out = raw
+    for r,k in zip(raw, known): 
+      if k in string.ascii_lowercase:
+          out = string.replace(out, r, k)
+    return out
+
+with open("en-GB.dic") as word_list:
+    dictionary = [w.lower() for w 
+                  in word_list.read().split("\r\n") 
+                  if "'" not in w]
+    pattern_dict = [(w, pattern(w)) for w in dictionary]
+
+sentence = expand_known_characters(raw_sentence, 
+                                   known_sentence)
+print "\"{}\"\n".format(sentence)
+
+guesses = {}
+
+for w in sentence.split(" "):
+    guesses[w] = find_word(w, pattern_dict)
+
+guesses = sorted(guesses.iteritems(), key=lambda x:len(x[1]))
+
+for word in guesses:
+    print "{} -- {}\n".format(word[0], word[1])
+    total += len(word[1])
 \end{python}
 
 Using this script to find possible matches for ``ERYHURBRWCVRP'' returned only
 one result, ``discrimination''. From here, many of the letters in this puzzle
-could already be determined. 
+could already be determined. I substituted this word back into my script, and
+the words 'policies', 'employees', 'see' and in popped out. 
 
+Substituting these new words back in, resulted in the following phrase: 
+
+"cQrldless employees see discrimination in JamilyJriendly policies"
+
+Although my dictionary didn't contain the phrase `familyfriendly', I was able
+to work this out using my intuition.`cQrldless' didn't seem to have any
+matching words. It appears that there has been an error here, and given the
+context the correct plain text word should be `childless'. 
+
+3. KSXXMT, FVTS SVJYMBF CFI EI BNSYYC JTMKEID 
+4. AXITUL PGGTXLW VGA OCXFT AUMCAL VAGH RXDKQPUR PXDM 
+
+
+Using this same method I was able to deduce the other messages as:
+\begin{enumerate}
+\item ``ntsb urges new ways to combat rising runway incidents''
+     1. YNTS QHABT YBK KJVT NR ORLSJN HCTCYA HQYKJV CYOCMBYNT 
+\item ``dutch authorities closing in on human smuggling ring''
+     2. GXRYK SXRKVWNRNIO YJVONHB NH VH KXASH OAXBBJNHB WNHB 
+\item Too many possibilities -- 32 was lowest number of choices
+\item Even worse than number 3! 
+     5. HQUSESTYY TBDSPKTTY YTT ERYHURBRWCVRPW RW JCBRSKJURTWESK DPSRHRTY 
+\item ``childless employees see discrimination in familyfriendly policies''
+\end{enumerate}
+
+   a b c d e f g h i j k l m n o p q r s t u v w x y z
+1. J S O M B   A   C       L Y R     H T N Q   K   V   
+2. S   Y G I   B K N     J A H V     W O R X           
+3.                                                     
+4.                                                     
+5. C   H E T J   Q R     S B W P D   U Y V         K   
+   a b c d e f g h i j k l m n o p q r s t u v w x y z
+
+                   
+1 vs 5
+                  Z
+                  X
+                  F J O P D E T V 
+                  G I R U M B N W  
+                  A C H Q L S Y K 
+                F J O P D E T V 
+                G I R U M B N W  
+                A C H Q L S Y K 
+              F J O P D E T V 
+              G I R U M B N W
+              A C H Q L S Y K
+            F J O P D E T V 
+            G I R U M B N W 
+            A C H Q L S Y K 
+          F J O P D E T V  
+      ... G I R U M B N W X A C H Q L S Y K F J O P D E T V Z G ...
+          A C H Q L S Y K F J
+        F J O P D E T V Z G    
+        G I R U M B N W X 
+        A C H Q L S Y K
+      F J O P D E T V 
+      G I R U M B N W  
+    X A C H Q L S Y K
+    F J O P D E T V 
+    G I R U M B N W  
+    A C H Q L S Y K
+                  Z
+
+1 vs 2
+        
+      U Q D M L E B S T N Y V W K   X F G A J I C O R H P U Q D M
+      X F G A J I C O R H P U Q D M L E B S T N Y V W K   X F G A 
+      L E B S T N Y V W K   X F G A J I C O R H P U Q D M L E B S       
+
+2 vs 5 
+
+           R U M B N W X A C H Q L S Y K F J O P 
+ R U M B N W X A C H Q L S Y K F J O P D E T V 
+
+
+   a b c d e f g h i j k l m n o p q r s t u v w x y z
+1. J S O M B G A P C I Z E L Y R U D H T N Q W K F V X 
+2. S C Y G I E B K N T D J A H V Z F W O R X U Q L P M 
+3.                                                     
+4.                                                     
+5. C N H E T J I Q R O F S B W P D L U Y V M Z X A K G 
+   a b c d e f g h i j k l m n o p q r s t u v w x y z
 
 
 % references section
