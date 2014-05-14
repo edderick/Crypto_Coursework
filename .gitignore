@@ -5,3 +5,5 @@
 *.aux
 .*.swp
 *.gz
+.ipynb_checkpoints
+*.dic
