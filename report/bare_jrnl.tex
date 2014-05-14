@@ -338,15 +338,52 @@ ARE TO BE FOUND IN THE LIVING OF LIFE ITSELF.
 
 
 \section{Headline Puzzles}
-This question has been divided into five parts, labeled 1 to 5.
+The headline puzzles.
 
-I found this question more challenging than first expected because:
-\begin{itemize}
-\item Ciphertext not long enough to perform frequency analysis
-\item Keyspace is too large to brute force
-\item We cannot be certain of the encryption mechanism
-\item Some of the texts do not contain any double characters (e.g. "oo")
-\end{itemize}
+I started by trying to decode at least one of the messages. I started by
+picking a long word, and trying to find a match for this word based on the
+pattern of the letters. 
+
+I wrote this python script to check the pattern of a letters words against an
+UK English language dictionary that I downloaded from
+http://www.karamasoft.com/ultimatespell/dictionary.aspx. This dictionary file
+contained 126,850 words. 
+
+\begin{python}
+import string 
+
+IN_WORD = "ERYHURBRWCVRPW"
+
+with open("en-GB.dic") as word_list:
+    dictionary = word_list.read().split("\r\n")
+
+def pattern(s):
+    seen = {}
+    out = ""
+    x = 'a'
+    for c in s:
+        if c in seen.keys():
+            out += seen[c]
+        else:
+            out += x
+            seen[c] = x
+            x = chr(ord(x)+1)
+
+    return out
+
+pattern_dict = [pattern(w) for w in dictionary]
+
+for i, p in enumerate(pattern_dict):
+    if p == pattern(IN_WORD.lower()):
+        print dictionary[i]
+
+\end{python}
+
+Using this script to find possible matches for ``ERYHURBRWCVRP'' returned only
+one result, ``discrimination''. From here, many of the letters in this puzzle
+could already be determined. 
+
+
 
 % references section
 
