@@ -1,10 +1,10 @@
-\documentclass[12pt,a4paper,twoside]{article}
+\documentclass[11pt,a4paper,twoside]{article}
 %\documentclass[journal]{IEEEtran}
 
 \usepackage[stable]{footmisc}
 \hyphenation{op-tical net-works semi-conduc-tor}
 
-\usepackage[top=2.4cm, bottom=2.4cm, left=2.95cm, right=2.95cm]{geometry} 
+\usepackage[top=2.2cm, bottom=2.2cm, left=2.4cm, right=2.4cm]{geometry} 
 
 \usepackage{listings}
 \lstset{basicstyle=\ttfamily, escapechar=\€}
@@ -12,6 +12,7 @@
 \usepackage{color}
 \usepackage{setspace}
 
+\usepackage{amsfonts}
 \usepackage{amsmath}
 
 \definecolor{Code}{rgb}{0,0,0}
@@ -62,8 +63,8 @@ emphstyle={\color{self}\slshape},
 %
 }}{}
 
-
 \usepackage{paralist}
+\usepackage{enumitem}
 
 \begin{document}
 
@@ -72,70 +73,145 @@ emphstyle={\color{self}\slshape},
 
 \maketitle
 
-\section{Ellitic Curves}
+\section{Elliptic Curves}
 This question has been divided into four parts, labeled A through D.
 
 \subsection{Part a}
+The Elliptic curve I was assigned was $y^2 = x^3 + 7x + 1$, over the field $\mathbb{F}_{17}$. 
+
+I began by calculating all the values of $y^2$:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{llllllllllllllllll}
+$y$   & 0 & 1 & 2 & 3 & 4  & 5 & 6 & 7  & 8  & 9  & 10 & 11 & 12 & 13 & 14 & 15 & 16 \\
+$y^2$ & 0 & 1 & 4 & 9 & 16 & 8 & 2 & 15 & 13 & 13 & 15 & 2  & 8  & 16 & 9  & 4  & 1 
+\end{tabular}
+\end{table}
+
+Then, using two lines of python:
+
+\begin{python}
+for x in range(0, 16):
+    print (x**3 + 7*x + 1) % 17 
+\end{python}
+
+I produced a table of $y^2$ values, which I mapped back to $y$ values.\
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lll}
+$x$ & $y^2$ & $y$     \\
+0   & 1     & 1 or 16 \\
+1   & 9     & 3 or 14 \\
+2   & 6     & --      \\
+3   & 15    & 10 or 7 \\
+4   & 8     & 5 or 12 \\
+5   & 8     & 5 or 12 \\
+6   & 4     & 15 or 2 \\
+7   & 2     & 6 or 11 \\
+8   & 8     & 5 or 12 \\
+9   & 11    & --      \\
+10  & 0     & 0       \\
+11  & 15    & 10 or 7 \\
+12  & 11    & --      \\
+13  & 11    & --      \\
+14  & 4     & 15 or 2 \\
+15  & 13    & 8 or 9  \\
+16  & 10    &        
+\end{tabular}
+\end{table}
+
+The points on my curve are: (0,1), (0,16), (1, 3), (1, 14), (3, 10), (3, 7),
+(4, 5), (4, 12), (5, 5), (5,12), (6, 15), (6, 2), (7, 6), (8, 5), (8, 12), (10,
+0), (11, 10), (11,7), (14, 5), (14, 2), (15, 8), (15, 9) and the point at
+infinity. 
+
 The order of my group is twenty four. 
 
 \subsection{Part b}
-Yes, of course it is. 
+Yes, my group is cyclic.
+
+The group has order of twenty four, meaning it can have one of the following
+structues: $\mathbb{C}_{24}$, $\mathbb{C}_{12}\times\mathbb{C}_{2}$,
+$\mathbb{C}_{6}\times\mathbb{C}_{4}$, $\mathbb{C}_{6}\times\mathbb{C}_{4}$,
+$\mathbb{C}_{6}\times\mathbb{C}_{2}\times\mathbb{C}_{2}$,
+$\mathbb{C}_{3}\times\mathbb{C}_{4}\times\mathbb{C}_{2}$, or
+$\mathbb{C}_{3}\times\mathbb{C}_{8}$
+
 
 \subsection{Part c}
 Elliptic curves have the interesting property of that any two points on the
-lien will intersect the line again at another point. This can be used as a
+line will intersect the line again at another point. This can be used as a
 group operator, and used to generate a group. For some reason this new group
 can be nice and secure.  
 
 \subsection{Part d}
-Answer here. 
+To encyrpt a message using elliptic curve cryptography, I have chosen to use a
+larger elliptic curve, as the curve that I was assigned has a low order, so
+will not be secure. 
 
+I wrote Python code to encyrpt the message using el gammal encryption. 
 
+\vfill
+\pagebreak
 \section{Vigenere Cipher}
-We were given the following message, and told to decrypt it:
+We were given the following message, and instructed to decrypt it:
 
-
-\begin{lstlisting}
-qhc jeqpaeb srxrrp hcoe pbccktjv hyoduxrc qrmgalp hyse
-yqtpxcrbd ree yqtcktgln mc gmsepkmcktq xnb oeqbapzhcos mke mc
-tfb myfn alnabrlp iq qhyq ilqeeoarbd afrarirp il jijftyoy mo
-cpftgzaj fndoaqqrsztsoe ympjfcyqimks aluja bc jajfcgluqiy
-kxngmujxtca dsoild tfb mykudxcrrrgkg nooabsq thgzh mctck tyheq
-mlyze yyrmxd flwcsep pilze reepb hyse zbel ko pbpmotca
-hyoduxrc qrmgalp il mryztgze wbt jftrie gp kllwl xbmrt flw
-qrcf x tpljyk wmrlb iomh lghe ykd flw fxrb qo gjpjbmckt mke gk
-ppxcrfcc lnc bxyjpjb iq aonxnr qrmgal qhgp cyk bc rsca tm
-zokmrmjiqb tfb sczupftw lf y jeykildfsi rcxl ulrja tyogcq
-wfflc xvmfdgkg bbtcztgln zv fskcrfolxl rbsrfne xs ublj xs
-roohxn bbtcztgln kbcfxngpmq puae tpljyks axn zb uqbd rl
-eqqaziiqe a ffdbbn qfdc zhyknci il xn mqhcowgpe qfdc zhyknci
-rcpiqqalq dcpiek tffs roohxn bleq kor zhykgc qhc ioefc txlsb
-od xnw darb bsq ilptcxd aealdeq lnjv tfb pmtep mrmcijb od qwm
-darbs yk etxlsxtmo wfl iq kor xwyoe mc tfb tpljyk cyknmq
-arqaah tfb tpljyk dcpiek uqfne zokjol pibb cfxnlbl yqtyzkq qhc
-lwlbr mc tfb tpljyk hmtetbr axn spe ffs ikouiebde mc tfb
-tpljyk pmtep jobbl rl eqqaziiqe a ffdbbn qfdc zhyknci tfxt
-pblgxbjv lcxkq lur peaoer hewp tffs gp tfb ela od qhc jeqpaeb 
-\end{lstlisting}
+\begin{quote}
+\small
+\raggedright
+qhc jeqpaeb srxrrp hcoe pbccktjv hyoduxrc qrmgalp hyse yqtpxcrbd ree yqtcktgln
+mc gmsepkmcktq xnb oeqbapzhcos mke mc tfb myfn alnabrlp iq qhyq ilqeeoarbd
+afrarirp il jijftyoy mo cpftgzaj fndoaqqrsztsoe ympjfcyqimks aluja bc
+jajfcgluqiy kxngmujxtca dsoild tfb mykudxcrrrgkg nooabsq thgzh mctck tyheq
+mlyze yyrmxd flwcsep pilze reepb hyse zbel ko pbpmotca hyoduxrc qrmgalp il
+mryztgze wbt jftrie gp kllwl xbmrt flw qrcf x tpljyk wmrlb iomh lghe ykd flw
+fxrb qo gjpjbmckt mke gk ppxcrfcc lnc bxyjpjb iq aonxnr qrmgal qhgp cyk bc rsca
+tm zokmrmjiqb tfb sczupftw lf y jeykildfsi rcxl ulrja tyogcq wfflc xvmfdgkg
+bbtcztgln zv fskcrfolxl rbsrfne xs ublj xs roohxn bbtcztgln kbcfxngpmq puae
+tpljyks axn zb uqbd rl eqqaziiqe a ffdbbn qfdc zhyknci il xn mqhcowgpe qfdc
+zhyknci rcpiqqalq dcpiek tffs roohxn bleq kor zhykgc qhc ioefc txlsb od xnw
+darb bsq ilptcxd aealdeq lnjv tfb pmtep mrmcijb od qwm darbs yk etxlsxtmo wfl
+iq kor xwyoe mc tfb tpljyk cyknmq arqaah tfb tpljyk dcpiek uqfne zokjol pibb
+cfxnlbl yqtyzkq qhc lwlbr mc tfb tpljyk hmtetbr axn spe ffs ikouiebde mc tfb
+tpljyk pmtep jobbl rl eqqaziiqe a ffdbbn qfdc zhyknci tfxt pblgxbjv lcxkq lur
+peaoer hewp tffs gp tfb ela od qhc jeqpaeb 
+\end{quote}
 
 My initial guess was that this cipher was a monoalphabetic substitution cipher,
-since the ciphertext appears to have spaces in roughly the correct places. 
+since the ciphertext appears to have spaces in roughly the correct places for
+it to be natural language. 
 
 I began solving this cipher by calculating the Index of Coincidence (IC) for
-the text. I was dissapointed to obtain a value of 1.128, which is quite
-different from the IC for English of 1.73. This means that the cipher used is
-not a simple monoalphabetic substitution. 
+the text. The IC is a weighted sum of the frequency of the letters, and can be
+used to determine if a ciphertext has the same frequency distribution as a given
+language. If it has the same distribution, then the cipher is a simple
+monoalphabetic substitution cipher. The IC is calculated as:
 
-I then attempted to iterate through different strides (number of letters to
+$$
+\textup{IC} =  \frac{\sum_{i=1}^{c} n_i(n_i -1)}{N(N - 1)/c}
+$$
+
+Where $N$ is the length of the text. $n_1$ to $n_c$ are the counts
+for each of the possible characters. And $c$ is the number of
+letters in the alphabet. 
+
+To do this I used code I wrote myself that can be found in Appendix
+\ref{IC_code}. I obtained a value of 1.128, which is quite different from the
+IC for English of 1.73. From this I concluded that the cipher used is not a
+simple monoalphabetic substitution. 
+
+Next I attempted to iterated through different strides (number of letters to
 skip when sampling), to see if the cipher used was dependent on the position in
 the text. A stride of 2 did not produce a better result, yielding 1.126 and
-1.129 starting from character 0 and 1 respectively.  
+1.129 starting from characters 0 and 1 respectively.  
 
 Fortunately, using a stride of 3 returned a much better set of values: 1.844,
 1.759 and 1.80; for starting character positions of 0, 1 and 2 respectively.
 Although this is not exactly equal the expected values for English, I felt that
 for the size of the messages (total length of the message divided by three),
-they indicated that it was worth investigating.  
+they indicated that it was worth investigating.
 
 Given that the substitution was a poly-alphabetic substitution with stride of
 three, I began by treating the cipher as a Viginere cipher. On inspection, the
@@ -143,8 +219,289 @@ triad 'qhc' jumped out at me as a repeating pattern. Due to the commonness of
 the word, I figured that the word could be `the'. If this was correct, then the
 Viginere key would be 'xay', resulting in a shifts of 23, 0 and 2.
 
-Using the following python code, I generated the answer to the question:
+Using the following python code found in Appendix \ref{vig_code}, I generated
+the answer to the question. The answer that I obtained was: 
 
+\begin{quote}
+\small
+\raggedright
+the message starts here recently hardware trojans have attracted the attention
+of governments and researchers one of the main concerns is that integrated
+circuits in military or critical infrastructure applications could be
+maliciously manipulated during the manufacturing process which often takes
+place abroad however since there have been no reported hardware trojans in
+practice yet little is known about how such a trojan would look like and how
+hard to implement one in practice one example is dopant trojan this can be used
+to compromise the security of a meaningful real world target while avoiding
+detection by functional testing as well as trojan detection mechanisms such
+trojans can be used to establish a hidden side channel in an otherwise side
+channel resistant design this trojan does not change the logic value of any
+gate but instead changes only the power profile of two gates an evaluator who
+is not aware of the trojan cannot attack the trojan design using common side
+channel attacks the owner of the trojan however can use his knowledge of the
+trojan power model to establish a hidden side channel that reliably leaks out
+secret keys this is the end of the message
+\end{quote}
+ 
+
+
+\vfill
+\pagebreak
+\section{Two Part Encryption}
+The file ``secret.hex'' contained a secret message. The message had been
+encyrpted in two stages, the first stage was unknown, and the second stage was
+a simple XOR based cipher. We were given the first two characters of the
+intermediate text --`Hg'.
+
+To decrypt the message, the two stages had to be performed in reverse order:
+first the XOR stage, followed by the unknown cipher stage. 
+
+I began by creating a python script that first reads in the secret message, and
+then retrieves the key for the known portion of the message. Given that we only
+had two letters of the intermediate text, I guessed that the key length of the
+message is two, and repreated the key that I had retrieved for the length of
+the message to retrieve some text. The Python code that I used to decode the
+message into it's intermediate form is as follows \ref{XOR_code}.
+
+
+This resulted in the followin intermediate text: 
+
+\begin{quote}
+\small
+\raggedright
+Hgt ltsbuba pm dumt uy hgt lpyh wqpmpxbr sbr tdxyuct lvyhtqv pm hgtl sdd,
+xbobpib hp tctb hgt aqtshtyh lubry.  Yxqtdv sbvpbt igp htddy vpx hgtv gsct hgt
+sbyitq uy npouba, lsr pq yulwdv luyhsotb.  Hgtqt sqt lsbv hgubay hgsh lsot dumt
+ipqhg gpdruba pb hp sbr yscpxquba. Exh dumt uy xbwqtrukhsedt sbr it sqt pmhtb
+lvyhtquty tctb hp pxqytdcty.  It hgubo yxkktyy, gswwubtyy, gtdwuba phgtqy, pq
+yxqwsyyuba pxqytdcty iudd lsot dumt ipqhg ducuba, exh it ksb sdisvy et iqpba pq
+mqxyhqshtr ev tctbhy. Hguy uy s qsbrpl wgqsyt.  Wgudpypwgtqy gsct s dph hp ysv
+sepxh hgt csdxt pm sdd hgtyt hgubay, sbr s duhhdt dtyy hp ysv sepxh pbt pm hgt
+lpyh csdxsedt hgubay pm sdd: dpct. Yp it ksb et kdtsq tbpxag sepxh igsh uh
+ltsby mpq dumt hp gsct ltsbuba sbr csdxt, exh igtb it wxh rpib pxq wgudpypwgv
+eppoy sbr skhxsddv ath pb iuhg ducuba, ltsbuba sbr csdxt ksb et tdxyuct. Ducuba
+itdd uy lpqt sqh hgsb ykutbkt pq wgudpypwgv.  Hgtqtmpqt,  hgt pbdv ytbyt it ksb
+lsot pm hgt urts hgsh dumt gsy ltsbuba uy hgsh hgtqt sqt yplt qtsypby hp duct
+qshgtq hgsb hp rut, sbr hgpyt qtsypby sqt hp et mpxbr ub hgt ducuba pm dumt
+uhytdm.
+\end{quote}
+
+By simple inspection, this looked like it was likely to be the output of a
+basic cipher -- the message contains only alphabetic characters, and there are
+spaces evenly distributed throughout the text. Although this could have just
+been by chance, it definitely looked like a good lead to follow.
+
+As I believed this text looked like natrual language, I decided the next step was
+to calculate the Index of Coincidence (IC) for this text. 
+
+The value calculated for the IC was ``1.7086'', which is very close to that of
+the English language (1.73). This finding confirmed my belief that the cipher
+used was some form of monoalphabetic substitution.  
+
+By copying the intermediate text into {\tt vim}, and using the search and
+replace functionality (s/x/Y/g), I began substituting letters with likely
+substitutions. I started basing my substitions on the frequencies of the
+letters; i.e. beginning by replacing `t' ,the most common letter in the text,
+with `E', the most common letter in English. Once I had replaced a few letters,
+it became obvious what words in the text could potentially be, so I based my
+substitutions on this. 
+
+Eventually, I managed to obtain the following message. As the message, makes
+sense to me in English, I am confident that this passage is the correct
+plaintext. 
+
+\begin{quote}
+\small
+\raggedright
+The meaning of life is the most profound and elusive mystery of them all,
+unknown to even the greatest minds. Surely anyone who tells you they have the
+answer is joking, mad or simply mistaken.  There are many things that make life
+worth holding on to and savouring. But life is unpredictable and we are often
+mysteries even to ourselves. We think success, happiness, helping others, or
+surpassing ourselves will make life worth living, but we can always be wrong or
+frustrated by events.  This is a random phrase.  Philosophers have a lot to say
+about the value of all these things, and a little less to say about one of the
+most valuable things of all: love. So we can be clear enough about what it
+means for life to have meaning and value, but when we put down our philosophy
+books and actually get on with living, meaning and value can be elusive. Living
+well is more art than science or philosophy. Therefore,  the only sense we can
+make of the idea that life has meaning is that there are some reasons to live
+rather than to die, and those reasons are to be found in the living of life
+itself.
+\end{quote}
+
+\vfill
+\pagebreak
+\section{Headline Puzzles}
+The headline puzzles were a cryptographic puzzle based around five newspaper
+headlines from around the time where the puzzle was published. The 
+
+We were asked to solve the following set of headlines: 
+
+\begin{enumerate}[noitemsep]
+\item YNTS QHABT YBK KJVT NR ORLSJN HCTCYA HQYKJV CYOCMBYNT 
+\item GXRYK SXRKVWNRNIO YJVONHB NH VH KXASH OAXBBJNHB WNHB 
+\item KSXXMT, FVTS SVJYMBF CFI EI BNSYYC JTMKEID 
+\item AXITUL PGGTXLW VGA OCXFT AUMCAL VAGH RXDKQPUR PXDM
+\item HQUSESTYY TBDSPKTTY YTT ERYHURBRWCVRPW RW JCBRSKJURTWESK DPSRHRTY
+\end{enumerate}
+
+I started by trying to decode at least one of the messages. I started by
+picking a long word, and trying to find a match for this word based on the
+pattern of the letters. 
+
+I wrote this python script to check the pattern of a letters words against an
+UK English language dictionary that I downloaded from
+http://www.karamasoft.com/ultimatespell/dictionary.aspx. This dictionary file
+contained 126,850 words. 
+
+Using this script to find possible matches for ``ERYHURBRWCVRP'' returned only
+one result, ``discrimination''. From here, many of the letters in this puzzle
+could already be determined. I substituted this word back into my script, and
+the words 'policies', 'employees', 'see' and in popped out. 
+
+Substituting these new words back in, resulted in the following phrase: 
+
+"cQrldless employees see discrimination in JamilyJriendly policies"
+
+Although my dictionary didn't contain the phrase `familyfriendly', I was able
+to work this out using my intuition.`cQrldless' didn't seem to have any
+matching words. It appears that there has been an error here, and given the
+context the correct plain text word should be `childless'. 
+
+Using this same method I was able to deduce the other messages as:
+\begin{enumerate}[noitemsep]
+\item Puzzle 1: ``ntsb urges new ways to combat rising runway incidents''
+\item Puzzle 2: ``dutch authorities closing in on human smuggling ring''
+\item Puzzle 4: ``childless employees see discrimination in familyfriendly policies''
+\end{enumerate}
+
+Puzzles 4 \& 5 lacked any long words that had few enough possible answers from
+which to produce an educated guess. 
+
+\begin{lstlisting}
+   a b c d e f g h i j k l m n o p q r s t u v w x y z
+1. J S O M B   A   C       L Y R     H T N Q   K   V   
+2. S   Y G I   B K N     J A H V     W O R X           
+3.                                                     
+4.                                                     
+5. C   H E T J   Q R     S B W P D   U Y V         K   
+   a b c d e f g h i j k l m n o p q r s t u v w x y z
+\end{lstlisting}
+                   
+Headline One vs Five
+
+\begin{lstlisting}
+                  Z
+                  X
+                  F J O P D E T V 
+                  G I R U M B N W  
+                  A C H Q L S Y K 
+                F J O P D E T V 
+                G I R U M B N W  
+                A C H Q L S Y K 
+              F J O P D E T V 
+              G I R U M B N W
+              A C H Q L S Y K
+            F J O P D E T V 
+            G I R U M B N W 
+            A C H Q L S Y K 
+          F J O P D E T V  
+      ... G I R U M B N W X A C H Q L S Y K F J O P D E T V Z G ...
+          A C H Q L S Y K F J
+        F J O P D E T V Z G    
+        G I R U M B N W X 
+        A C H Q L S Y K
+      F J O P D E T V 
+      G I R U M B N W  
+    X A C H Q L S Y K
+    F J O P D E T V 
+    G I R U M B N W  
+    A C H Q L S Y K
+                  Z
+\end{lstlisting}
+
+Headline One vs Two
+        
+\begin{lstlisting}
+      U Q D M L E B S T N Y V W K Z X F G A J I C O R H P U Q D M
+      X F G A J I C O R H P U Q D M L E B S T N Y V W K   X F G A 
+      L E B S T N Y V W K   X F G A J I C O R H P U Q D M L E B S       
+\end{lstlisting}
+
+Headline Two vs Five 
+
+\begin{lstlisting}
+           R U M B N W X A C H Q L S Y K F J O P 
+ R U M B N W X A C H Q L S Y K F J O P D E T V 
+\end{lstlisting}
+
+
+\begin{lstlisting}
+   a b c d e f g h i j k l m n o p q r s t u v w x y z
+1. J S O M B G A P C I Z E L Y R U D H T N Q W K F V X 
+2. S C Y G I E B K N T D J A H V Z F W O R X U Q L P M 
+3.                                                     
+4.                                                     
+5. C N H E T J I Q R O F S B W P D L U Y V M Z X A K G 
+   a b c d e f g h i j k l m n o p q r s t u v w x y z
+\end{lstlisting}
+
+
+\begin{lstlisting}
+Keys 
+KEY: G I R U M B N W X A C H Q L S Y K F J O P D E T V Z
+
+  LEBSTNYVWKZXFGAJICORHPUQDM
+
+1 EBSTNYVWKZXFGAJICORHPUQDML
+2 JICORHPUQDMLEBSTNYVWKZXFGA
+3 XFGAJICORHPUQDMLEBSTNYVWKZ
+4 PUQDMLEBSTNYVWKZXFGAJICORH
+5 STNYVWKZXFGAJICORHPUQDMLEB
+\end{lstlisting}
+
+My final answers for this question were: 
+
+
+\begin{enumerate}[noitemsep]
+\item NTSB URGES NEW WAYS TO COMBAT RISING RUNWAY INCIDENTS
+\item DUTCH AUTHORITIES CLOSING IN ON HUMAN SMUGGLING RING
+\item DOLLAR EURO OUTPACE YEN IN CHOPPY TRADING
+\item RIPKEN LOOKING FOR QUICK RETURN FROM DISABLED LIST
+\item CHILDLESS EMPLOYEES SEE DISCRIMINATION IN FAMILYFRIENDLY POLICIES
+\end{enumerate}
+
+Once the correct answers have been obtained, it is possible to search the Web,
+and retrieve the correct answers from an NSA leaflet. The NSA solution goes on
+to uncover the setting, the Key and the Hat: 
+
+Setting: TOADY Key: SYCOPHANT Hat: BOOTLICKER
+
+
+% references section
+
+% can use a bibliography generated by BibTeX as a .bbl file
+% BibTeX documentation can be easily obtained at:
+% http://www.ctan.org/tex-archive/biblio/bibtex/contrib/doc/
+% The IEEEtran BibTeX style support page is at:
+% http://www.michaelshell.org/tex/ieeetran/bibtex/
+%\bibliographystyle{IEEEtran}
+% argument is your BibTeX string definitions and bibliography database(s)
+%\bibliography{IEEEabrv,../bib/paper}
+%
+% <OR> manually copy in the resultant .bbl file
+% set second argument of \begin to the number of references
+% (used to reserve space for the reference number labels box)
+%\begin{thebibliography}{1}
+%\end{thebibliography}
+
+\vfill
+\pagebreak
+\section*{Appendix} 
+\appendix 
+\section{Vigenere Code}
+\label{vig_code}
 \begin{python}
 import string
 
@@ -168,109 +525,8 @@ with open('ciphertext.txt'):
 print answer
 \end{python}
 
-The answer that I obtained was: 
-
-\begin{lstlisting}
-the message starts here recently hardware trojans have
-attracted the attention of governments and researchers one
-of the main concerns is that integrated circuits in military
-or critical infrastructure applications could be maliciously
-manipulated during the manufacturing process which often
-takes place abroad however since there have been no reported
-hardware trojans in practice yet little is known about how
-such a trojan would look like and how hard to implement one
-in practice one example is dopant trojan this can be used to
-compromise the security of a meaningful real world target
-while avoiding detection by functional testing as well as
-trojan detection mechanisms such trojans can be used to
-establish a hidden side channel in an otherwise side channel
-resistant design this trojan does not change the logic value
-of any gate but instead changes only the power profile of
-two gates an evaluator who is not aware of the trojan cannot
-attack the trojan design using common side channel attacks
-the owner of the trojan however can use his knowledge of the
-trojan power model to establish a hidden side channel that
-reliably leaks out secret keys this is the end of the
-message
-\end{lstlisting}
- 
-\section{Two Part Encryption}
-The file ``secret.hex'' contained a secret message. The message had been
-encyrpted in two stages, the first stage was unknown, and the second stage was
-a simple XOR based cipher. We were given the first two characters of the
-intermediate text --`Hg'.
-
-To decrypt the message, the two stages had to be performed in reverse order:
-first the XOR stage, followed by the unknown cipher stage. 
-
-I began by creating a python script that first reads in the secret message, and
-then retrieves the key for the known portion of the message. Given that we only
-had two letters of the intermediate text, I guessed that the key length of the
-message is two, and repreated the key that I had retrieved for the length of
-the message to retrieve some text. The Python code that I used to decode the
-message into it's intermediate form is as follows:
-
-\begin{python}
-with open("secret.hex") as f:
-    ciphertext = f.read()
-
-    k1 = chr(ord(ciphertext[0:1]) ^ ord("H"))
-    k2 = chr(ord(ciphertext[1:2]) ^ ord("g"))
-    keystream = (k1 + k2) * (len(ciphertext) / 2)
-
-    plaintext = "".join(
-            [chr(ord(k) ^ ord(c)) 
-             for k, c in zip(keystream, ciphertext)]
-    )
-
-    print plaintext
-\end{python}
-
-This resulted in the followin intermediate text: 
-
-\begin{lstlisting}
-Hgt ltsbuba pm dumt uy hgt lpyh wqpmpxbr sbr tdxyuct lvyhtqv
-pm hgtl sdd, xbobpib hp tctb hgt aqtshtyh lubry.  Yxqtdv
-sbvpbt igp htddy vpx hgtv gsct hgt sbyitq uy npouba, lsr pq
-yulwdv luyhsotb.  Hgtqt sqt lsbv hgubay hgsh lsot dumt ipqhg
-gpdruba pb hp sbr yscpxquba. Exh dumt uy xbwqtrukhsedt sbr it
-sqt pmhtb lvyhtquty tctb hp pxqytdcty.  It hgubo yxkktyy,
-gswwubtyy, gtdwuba phgtqy, pq yxqwsyyuba pxqytdcty iudd lsot
-dumt ipqhg ducuba, exh it ksb sdisvy et iqpba pq mqxyhqshtr ev
-tctbhy. Hguy uy s qsbrpl wgqsyt.  Wgudpypwgtqy gsct s dph hp
-ysv sepxh hgt csdxt pm sdd hgtyt hgubay, sbr s duhhdt dtyy hp
-ysv sepxh pbt pm hgt lpyh csdxsedt hgubay pm sdd: dpct. Yp it
-ksb et kdtsq tbpxag sepxh igsh uh ltsby mpq dumt hp gsct
-ltsbuba sbr csdxt, exh igtb it wxh rpib pxq wgudpypwgv eppoy
-sbr skhxsddv ath pb iuhg ducuba, ltsbuba sbr csdxt ksb et
-tdxyuct. Ducuba itdd uy lpqt sqh hgsb ykutbkt pq wgudpypwgv.
-Hgtqtmpqt,  hgt pbdv ytbyt it ksb lsot pm hgt urts hgsh dumt
-gsy ltsbuba uy hgsh hgtqt sqt yplt qtsypby hp duct qshgtq hgsb
-hp rut, sbr hgpyt qtsypby sqt hp et mpxbr ub hgt ducuba pm
-dumt uhytdm.
-\end{lstlisting}
-
-By simple inspection, this looked like it was likely to be the output of a
-basic cipher -- the message contains only alphabetic characters, and there are
-spaces evenly distributed throughout the text. Although this could have just
-been by chance, it definitely looked like a good lead to follow.
-
-As I believed this text looked like natrual language, I decided the next step was
-to calculate the Index of Coincidence (IC) for this text. The IC is a weighted
-sum of the frequency of the letters, and can be used to identify if a
-ciphertext has the same frequency distribution as a given language. If it has
-the same distribution, then the cipher is a simple substitution cipher. The IC
-is calculated as:
-
-$$
-\textup{IC} =  \frac{\sum_{i=1}^{c} n_i(n_i -1)}{N(N - 1)/c}
-$$
-
-Where $N$ is the length of the text. $n_1$ to $n_c$ are the counts
-for each of the possible characters. And $c$ is the number of
-letters in the alphabet. 
-
-To calculate the IC, I used the following python script. 
+\section{IC Code}
+\label{IC_code}
 \begin{python}
 from __future__ import division
 import string
@@ -298,57 +554,26 @@ with open("intermediate.txt") as f:
     print IC
 \end{python}
 
-The value calculated for the IC was ``1.7086'', which is very close to that of
-the English language (1.73). This finding confirmed my belief that the cipher
-used was some form of monoalphabetic substitution.  
+\section{XOR Code}
+\label{XOR_code}
+\begin{python}
+with open("secret.hex") as f:
+    ciphertext = f.read()
 
-By copying the intermediate text into {\tt vim}, and using the search and
-replace functionality (s/x/Y/g), I began substituting letters with likely
-substitutions. I started basing my substitions on the frequencies of the
-letters; i.e. beginning by replacing `t' ,the most common letter in the text,
-with `E', the most common letter in English. Once I had replaced a few letters,
-it became obvious what words in the text could potentially be, so I based my
-substitutions on this. 
+    k1 = chr(ord(ciphertext[0:1]) ^ ord("H"))
+    k2 = chr(ord(ciphertext[1:2]) ^ ord("g"))
+    keystream = (k1 + k2) * (len(ciphertext) / 2)
 
-Eventually, I managed to obtain the following message. As the message, makes
-sense to me in English, I am confident that this passage is the correct
-plaintext. 
+    plaintext = "".join(
+            [chr(ord(k) ^ ord(c)) 
+             for k, c in zip(keystream, ciphertext)]
+    )
 
-\begin{lstlisting}
-THE MEANING OF LIFE IS THE MOST PROFOUND AND ELUSIVE MYSTERY
-OF THEM ALL, UNKNOWN TO EVEN THE GREATEST MINDS. SURELY
-ANYONE WHO TELLS YOU THEY HAVE THE ANSWER IS JOKING, MAD OR
-SIMPLY MISTAKEN.  THERE ARE MANY THINGS THAT MAKE LIFE WORTH
-HOLDING ON TO AND SAVOURING. BUT LIFE IS UNPREDICTABLE AND
-WE ARE OFTEN MYSTERIES EVEN TO OURSELVES. WE THINK SUCCESS,
-HAPPINESS, HELPING OTHERS, OR SURPASSING OURSELVES WILL MAKE
-LIFE WORTH LIVING, BUT WE CAN ALWAYS BE WRONG OR FRUSTRATED
-BY EVENTS.  THIS IS A RANDOM PHRASE.  PHILOSOPHERS HAVE A
-LOT TO SAY ABOUT THE VALUE OF ALL THESE THINGS, AND A LITTLE
-LESS TO SAY ABOUT ONE OF THE MOST VALUABLE THINGS OF ALL:
-LOVE. SO WE CAN BE CLEAR ENOUGH ABOUT WHAT IT MEANS FOR LIFE
-TO HAVE MEANING AND VALUE, BUT WHEN WE PUT DOWN OUR
-PHILOSOPHY BOOKS AND ACTUALLY GET ON WITH LIVING, MEANING
-AND VALUE CAN BE ELUSIVE. LIVING WELL IS MORE ART THAN
-SCIENCE OR PHILOSOPHY. THEREFORE,  THE ONLY SENSE WE CAN
-MAKE OF THE IDEA THAT LIFE HAS MEANING IS THAT THERE ARE
-SOME REASONS TO LIVE RATHER THAN TO DIE, AND THOSE REASONS
-ARE TO BE FOUND IN THE LIVING OF LIFE ITSELF.
-\end{lstlisting}
+    print plaintext
+\end{python}
 
-
-\section{Headline Puzzles}
-The headline puzzles.
-
-I started by trying to decode at least one of the messages. I started by
-picking a long word, and trying to find a match for this word based on the
-pattern of the letters. 
-
-I wrote this python script to check the pattern of a letters words against an
-UK English language dictionary that I downloaded from
-http://www.karamasoft.com/ultimatespell/dictionary.aspx. This dictionary file
-contained 126,850 words. 
-
+\section{Headline Code}
+\label{headline_code}
 \begin{python}
 import string
 
@@ -414,113 +639,6 @@ for word in guesses:
     print "{} -- {}\n".format(word[0], word[1])
     total += len(word[1])
 \end{python}
-
-Using this script to find possible matches for ``ERYHURBRWCVRP'' returned only
-one result, ``discrimination''. From here, many of the letters in this puzzle
-could already be determined. I substituted this word back into my script, and
-the words 'policies', 'employees', 'see' and in popped out. 
-
-Substituting these new words back in, resulted in the following phrase: 
-
-"cQrldless employees see discrimination in JamilyJriendly policies"
-
-Although my dictionary didn't contain the phrase `familyfriendly', I was able
-to work this out using my intuition.`cQrldless' didn't seem to have any
-matching words. It appears that there has been an error here, and given the
-context the correct plain text word should be `childless'. 
-
-3. KSXXMT, FVTS SVJYMBF CFI EI BNSYYC JTMKEID 
-4. AXITUL PGGTXLW VGA OCXFT AUMCAL VAGH RXDKQPUR PXDM 
-
-
-Using this same method I was able to deduce the other messages as:
-\begin{enumerate}
-\item ``ntsb urges new ways to combat rising runway incidents''
-     1. YNTS QHABT YBK KJVT NR ORLSJN HCTCYA HQYKJV CYOCMBYNT 
-\item ``dutch authorities closing in on human smuggling ring''
-     2. GXRYK SXRKVWNRNIO YJVONHB NH VH KXASH OAXBBJNHB WNHB 
-\item Too many possibilities -- 32 was lowest number of choices
-\item Even worse than number 3! 
-     5. HQUSESTYY TBDSPKTTY YTT ERYHURBRWCVRPW RW JCBRSKJURTWESK DPSRHRTY 
-\item ``childless employees see discrimination in familyfriendly policies''
-\end{enumerate}
-
-   a b c d e f g h i j k l m n o p q r s t u v w x y z
-1. J S O M B   A   C       L Y R     H T N Q   K   V   
-2. S   Y G I   B K N     J A H V     W O R X           
-3.                                                     
-4.                                                     
-5. C   H E T J   Q R     S B W P D   U Y V         K   
-   a b c d e f g h i j k l m n o p q r s t u v w x y z
-
-                   
-1 vs 5
-                  Z
-                  X
-                  F J O P D E T V 
-                  G I R U M B N W  
-                  A C H Q L S Y K 
-                F J O P D E T V 
-                G I R U M B N W  
-                A C H Q L S Y K 
-              F J O P D E T V 
-              G I R U M B N W
-              A C H Q L S Y K
-            F J O P D E T V 
-            G I R U M B N W 
-            A C H Q L S Y K 
-          F J O P D E T V  
-      ... G I R U M B N W X A C H Q L S Y K F J O P D E T V Z G ...
-          A C H Q L S Y K F J
-        F J O P D E T V Z G    
-        G I R U M B N W X 
-        A C H Q L S Y K
-      F J O P D E T V 
-      G I R U M B N W  
-    X A C H Q L S Y K
-    F J O P D E T V 
-    G I R U M B N W  
-    A C H Q L S Y K
-                  Z
-
-1 vs 2
-        
-      U Q D M L E B S T N Y V W K   X F G A J I C O R H P U Q D M
-      X F G A J I C O R H P U Q D M L E B S T N Y V W K   X F G A 
-      L E B S T N Y V W K   X F G A J I C O R H P U Q D M L E B S       
-
-2 vs 5 
-
-           R U M B N W X A C H Q L S Y K F J O P 
- R U M B N W X A C H Q L S Y K F J O P D E T V 
-
-
-   a b c d e f g h i j k l m n o p q r s t u v w x y z
-1. J S O M B G A P C I Z E L Y R U D H T N Q W K F V X 
-2. S C Y G I E B K N T D J A H V Z F W O R X U Q L P M 
-3.                                                     
-4.                                                     
-5. C N H E T J I Q R O F S B W P D L U Y V M Z X A K G 
-   a b c d e f g h i j k l m n o p q r s t u v w x y z
-
-
-% references section
-
-% can use a bibliography generated by BibTeX as a .bbl file
-% BibTeX documentation can be easily obtained at:
-% http://www.ctan.org/tex-archive/biblio/bibtex/contrib/doc/
-% The IEEEtran BibTeX style support page is at:
-% http://www.michaelshell.org/tex/ieeetran/bibtex/
-%\bibliographystyle{IEEEtran}
-% argument is your BibTeX string definitions and bibliography database(s)
-%\bibliography{IEEEabrv,../bib/paper}
-%
-% <OR> manually copy in the resultant .bbl file
-% set second argument of \begin to the number of references
-% (used to reserve space for the reference number labels box)
-%\begin{thebibliography}{1}
-%\end{thebibliography}
-
 
 %\vfill
 
