@@ -561,8 +561,14 @@ to uncover the Setting: TOADY, Key: SYCOPHANT and Hat: BOOTLICKER
 \section*{Appendix} 
 \appendix 
 
+All code found in this appendix was written by me, and should be executed using
+Python 2.7. 
+
 \section{Elliptic Curve Code}
 \label{ECC}
+This code calculates the elliptic curve operator, for point addition and
+multiplication. There are additional functions to simplify common tasks such as
+raising to a power. 
 \begin{python}
 A = 7
 B = 1
@@ -609,6 +615,8 @@ def power(p, n):
 
 \section{EC Diffie-Hellman}
 \label{ECDH}
+This code uses the Elliptic curve functions defined above to simulate the
+Diffie-Hellman key exchange. 
 \begin{python}
 g = Point(11,7)
 
@@ -633,6 +641,8 @@ print gBA
 
 \section{Vigenere Code}
 \label{vig_code}
+This code is used to solve a Vigenere cipher where provided with the correct
+key. 
 \begin{python}
 import string
 
@@ -661,6 +671,8 @@ print answer
 
 \section{IC Code}
 \label{IC_code}
+This code is used to generate the Index of Coincidence for a text. It can also
+be used to count letter frequencies. 
 \begin{python}
 from __future__ import division
 import string
@@ -690,6 +702,7 @@ with open("intermediate.txt") as f:
 
 \section{XOR Code}
 \label{XOR_code}
+This code solves the XOR part of the two part cryptography section. 
 \begin{python}
 with open("secret.hex") as f:
     ciphertext = f.read()
@@ -710,6 +723,8 @@ with open("secret.hex") as f:
 \pagebreak
 \section{Headline Code}
 \label{headline_code}
+This code is used to find possible words based on the patterns of words in
+cipher text. 
 \begin{python}
 import string
 
@@ -778,6 +793,7 @@ for word in guesses:
 
 \section{Headline Key Checker}
 \label{Headline_checker}
+This code is used to enumerate the possible headlines, using all rotations of the key alphabet. 
 \begin{python}
 def rotate(s):
     return s[1:]+s[:1]
